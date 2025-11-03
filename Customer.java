@@ -94,16 +94,14 @@ public boolean login() {
     }
 
     
-    public String getDetails() {
-        return "Customer ID: " + customerId +
-               "\nName: " + getName() +
-               "\nEmail: " + getEmail() +
-               "\nPhone: " + getPhoneNumber() +
-               "\nUsername: " + username +
-               "\nElite Member: " + (isEliteCustomer ? "Yes" : "No") +
-               "\nSubscription Active: " + (isSubscriptionActive() ? "Yes" : "No") +
-               "\nAddress: " + address;
-    }
+   public String getDetails() {
+    return super.getDetails() +               
+           "\nCustomer ID: " + customerId +
+           "\nUsername: " + username +
+           "\nElite Member: " + (isEliteCustomer ? "Yes" : "No") +
+           "\nSubscription Active: " + (isSubscriptionActive() ? "Yes" : "No") +
+           "\nAddress: " + address;
+}
     
     
     

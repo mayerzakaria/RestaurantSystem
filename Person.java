@@ -7,7 +7,7 @@ package restaurantsystem;
 import java.util.*;
 public class Person 
 {
-    public String name;
+    public  String name;
     public String email;
     public String phoneNumber;
 
