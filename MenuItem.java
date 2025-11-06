@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurantsystem;
+package restaurantsystem1;
 
 /**
  *
@@ -24,43 +24,34 @@ public class MenuItem {
         setIsAvailable(isAvailable);
     }
     
-    public void setName(String name) {
+      public void setName(String name){
         this.name = name;
     }
-
-    public void setDescription(String description) {
+     public void setDescription(String description) {
         this.description = description;
     }
-
-    public void setPrice(double price) {
+     public void setPrice(double price) {
         this.price = price;
     }
-
     public void setCategory(String category) {
         this.category = category;
     }
-
     public void setIsAvailable(boolean isAvailable) {
         this.isAvailable = isAvailable;
     }
-
     public String getName() {
         return name;
     }
-
     public String getDescription() {
         return description;
     }
-
     public double getPrice() {
         return price;
     }
-
     public String getCategory() {
         return category;
     }
-
-    public boolean isIsAvailable() {
+    public boolean isAvailable() {
         return isAvailable;
     }
     

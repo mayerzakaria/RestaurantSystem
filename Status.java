@@ -4,9 +4,10 @@
  */
 package restaurantsystem1;
 
-
-public enum Systemmode {
-    online_delivery,
-    walk_in ,
-    takeAway
+/**
+ *
+ * @author HD
+ */
+public enum  Status {
+    PENDING,FAILED,COMPLETE
 }

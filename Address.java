@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurantsystem;
+package restaurantsystem1;
 
 /**
  *
@@ -14,7 +14,8 @@ public class Address
     private String fulladdress;
     private boolean isDefault;
 
-    public Address(int addressid, String fulladdress, boolean isDefault) {
+    public Address(int addressid, String fulladdress, boolean isDefault)
+    {
        setAddressid (addressid) ;
          setFulladdress(fulladdress) ;
          setIsDefault (isDefault);
@@ -24,7 +25,8 @@ public class Address
         return addressid;
     }
 
-    public void setAddressid(int addressid) {
+    public void setAddressid(int addressid) 
+    {
         this.addressid = addressid;
     }
 
@@ -36,7 +38,7 @@ public class Address
         this.fulladdress = fulladdress;
     }
 
-    public boolean isIsDefault() {
+    public boolean isDefault() {
         return isDefault;
     }
 
