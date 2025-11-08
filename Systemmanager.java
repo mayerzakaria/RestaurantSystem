@@ -4,60 +4,75 @@
  */
 package restaurantsystem1;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.Scanner;
 
-public class Systemmanager {
-    
-     private Systemmode mode;
+public class Systemmanager implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private Systemmode currentMode;
 
     public Systemmanager(Systemmode mode) {
-        this.mode = mode;
-    }
-    public Systemmode getMode() {
-        return mode;
+        this.currentMode = mode;
     }
 
-    
-      public void selectMode() {
+    public Systemmode getCurrentMode() {
+        return currentMode;
+    }
+
+    public void setCurrentMode(Systemmode mode) {
+        this.currentMode = mode;
+        System.out.println("System mode changed to: " + mode);
+    }
+
+    // Directly set mode
+    public void directToOnline() {
+        setCurrentMode(Systemmode.ONLINE_DELIVERY);
+        System.out.println("System set to ONLINE DELIVERY mode.\n");
+    }
+
+    public void directToTakeaway() {
+        setCurrentMode(Systemmode.TAKEAWAY);
+        System.out.println("System set to TAKEAWAY mode.\n");
+    }
+
+    public void directToDineIn() {
+        setCurrentMode(Systemmode.DINE_IN);
+        System.out.println("System set to DINE-IN mode.\n");
+    }
+
+    // Interactive selection
+    public void selectMode() {
         Scanner sc = new Scanner(System.in);
-        
         System.out.println("Welcome to the Restaurant System!");
         System.out.println("Please select your mode:");
         System.out.println("1. Online Delivery");
         System.out.println("2. Takeaway");
         System.out.println("3. Dine-In");
-        
+
         int choice = sc.nextInt();
-        
         switch (choice) {
-            case 1:
-                directToOnline();
-                break;
-            case 2:
-                directToTakeaway();
-                break;
-            case 3:
-                directToDineIn();
-                break;
-            default:
+            case 1 -> directToOnline();
+            case 2 -> directToTakeaway();
+            case 3 -> directToDineIn();
+            default -> {
                 System.out.println("Invalid choice! Defaulting to Dine-In mode.");
                 directToDineIn();
+            }
         }
     }
-   
-    public void directToOnline() {
-        mode = Systemmode.online_delivery;
-        System.out.println("System set to ONLINE DELIVERY mode.\n");
+
+    // Mode description
+    public String getModeDescription() {
+        return switch (currentMode) {
+            case ONLINE_DELIVERY -> "Online Delivery - Customers order from home for delivery";
+            case TAKEAWAY -> "Takeaway - Customers order for pickup";
+            case DINE_IN -> "Dine-In - Customers order and eat in restaurant";
+        };
     }
-    
-    public void directToTakeaway() {
-        mode = Systemmode.takeAway;
-        System.out.println("System set to TAKEAWAY mode.\n");
+
+    @Override
+    public String toString() {
+        return "System Manager [Current Mode: " + currentMode + "]";
     }
-    
-    public void directToDineIn() {
-        mode = Systemmode.walk_in;
-        System.out.println("System set to DINE-IN mode.\n");
-    }
-     
 }

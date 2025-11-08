@@ -43,7 +43,7 @@ public class Address
     }
 
     public void setIsDefault(boolean isDefault) {
-        this.isDefault = isDefault; // if true means he prefered the address (first address) & false ( means the second address )
+        this.isDefault = isDefault; 
     }
 
     @Override

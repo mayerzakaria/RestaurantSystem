@@ -1,9 +1,11 @@
 package restaurantsystem1;
 
 import java.util.*;
+import java.io.Serializable;
+import java.util.Map;
 
-public class Cashier extends Person 
-{
+public class Cashier extends Person implements Serializable {
+    private static final long serialVersionUID = 1L;
 
    // private String employeeId;
     private double salary;
@@ -46,74 +48,65 @@ public class Cashier extends Person
     }
     
 
-  // Method للـ Takeaway orders
-public Order processTakeawayOrder(Customer customer, Map<MenuItem, Integer> items) {
-    System.out.println("\n=== PROCESSING TAKEAWAY ORDER ===");
-    System.out.println("Cashier: " + getName());
-    System.out.println("Customer: " + customer.getName());
-
-    customer.incrementDineInCount();
-
-    Order order = new Order(customer, items, Systemmode.takeAway, null);
-    order.calculateSubtotal();
-    order.applyEliteDiscount();
-    order.calculateTotal();
-
-    System.out.println("Takeaway order processed successfully!");
-    order.updateStatus(Status.COMPLETE);
-    System.out.println("Order ID: " + order.getOrderId());
-    System.out.println("Total: EGP " + order.getTotal());
-    
-    return order;
-}
-    public Order processWalkInOrder(Customer customer, Map<MenuItem, Integer> items, Table table) 
-    {
-         System.out.println("\n=== PROCESSING WALK-IN ORDER ===");
+ 
+ public Order processTakeawayOrder(Customer customer, Map<MenuItem, Integer> items) {
+        System.out.println("\n=== PROCESSING TAKEAWAY ORDER ===");
         System.out.println("Cashier: " + getName());
         System.out.println("Customer: " + customer.getName());
-        customer.incrementDineInCount();
-        Order order = new Order(customer, items, Systemmode.walk_in, table);
+
+        Order order = new Order(customer, items, Systemmode.TAKEAWAY, null);
         order.calculateSubtotal();
         order.applyEliteDiscount();
         order.calculateTotal();
-        System.out.println("Order processed successfully!");
+        order.updateStatus(Status.COMPLETE);
+
+        System.out.println("Takeaway order processed successfully!");
+       System.out.println("Order ID: " + order.getOrderId());
+        System.out.println("Total: EGP " + String.format("%.2f", order.getTotal()));
+
+        return order;
+    }
+   public Order processWalkInOrder(Customer customer, Map<MenuItem, Integer> items, Table table) {
+        System.out.println("\n=== PROCESSING DINE-IN ORDER ===");
+        System.out.println("Cashier: " + getName());
+        System.out.println("Customer: " + customer.getName());
+        System.out.println("Table: #" + table.getTableNumber());
+
+        customer.incrementDineInCount();
+        setAssignedTable(table);
+        Order order = new Order(customer, items, Systemmode.DINE_IN, table);
+        order.calculateSubtotal();
+        order.applyEliteDiscount();
+        order.calculateTotal();
+        order.updateStatus(Status.COMPLETE);
+
+        System.out.println("Dine-in order processed successfully!");
         System.out.println("Order ID: " + order.getOrderId());
-        System.out.println("Total: EGP " + order.getTotal());
-        
+        System.out.println("Total: EGP " + String.format("%.2f", order.getTotal()));
+
         return order;
     }
 
    
-  public void acceptPayment(Order order, double paymentAmount, PaymentMethod paymentMethod) 
-  {
-        if (order == null) {
-            System.out.println(" Error: No order to process payment for!");
-            return;
-        }
-
-        if (order.getPayment() == null) {
-            Payment payment = new Payment(paymentAmount, paymentMethod, order);
-            order.setPayment(payment);
-        }
-
-        Payment payment = order.getPayment();
-            if (payment == null) {
-    System.out.println(" Error: Failed to create payment!");
-    return;
-            }
-        if (payment.getAmount() >= order.getTotal()) {
-            payment.setStatus(Status.COMPLETE);
-            double change = payment.getAmount() - order.getTotal();
-            System.out.println(" Payment of EGP " + payment.getAmount() + " accepted.");
-            if (change > 0) {
-                System.out.println("Change to return: EGP " + String.format("%.2f", change));
-            }
-        } else {
-            payment.setStatus(Status.PENDING);
-            double remaining = order.getTotal() - payment.getAmount();
-            System.out.println(" Insufficient payment! EGP " + String.format("%.2f", remaining) + " remaining.");
-        }
+  public boolean acceptPayment(Order order, double paymentAmount, PaymentMethod paymentMethod) {
+    if (order == null) {
+        System.out.println("Error: No order to process payment for!");
+        return false;
     }
+
+    Payment payment = new Payment(paymentAmount,  paymentMethod, order.getOrderId());
+    order.setPayment(payment);
+    boolean success = payment.processPayment(order.getTotal());
+
+    if (success) {
+        order.updateStatus(Status.COMPLETE);
+    } else {
+        order.updateStatus(Status.FAILED);
+    }
+
+    return success;
+}
+
 
 
     // Print receipt

@@ -4,30 +4,35 @@
  */
 package restaurantsystem1;
 
+import java.io.Serializable;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
-public class Menu {
+public class Menu implements Serializable {
+    private static final long serialVersionUID = 1L; 
     
     private Date lastUpdate;
     private ArrayList<MenuItem> items;
-
-    private void updateLastUpdate() {
-        this.lastUpdate = new Date();
-    }
-
+    
     public Menu() {
         this.lastUpdate = new Date();
         this.items = new ArrayList<>();
     }
-
-    public Date getLastUpdate() {
+      public Date getLastUpdate() {
         return lastUpdate;
     }
 
     public ArrayList<MenuItem> getMenuItems() {
         return items;
     }
+
+    private void updateLastUpdate() {
+        this.lastUpdate = new Date();
+    }
+
+    
+
+  
 
     public boolean addItem(MenuItem item) {
         if (item == null) {
@@ -125,15 +130,9 @@ public class Menu {
         return avialableItems;
     }
 
-    public void showLastUpdate() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println("Last updated on: " + formatter.format(lastUpdate));
-    }
+   
 
-    // ✅ FIXED VERSION of selectMenuItems()
-    // 1. Removed reference to undefined 'menu'
-    // 2. Added Scanner as a parameter (no need for static)
-    // 3. Uses this.items instead of external menu variable
+   
 
     public Map<MenuItem, Integer> selectMenuItems(Scanner scanner) {
         Map<MenuItem, Integer> selectedItems = new HashMap<>();
@@ -173,7 +172,12 @@ public class Menu {
             System.out.println(" Added: " + selectedItem.getName() + " x" + qty);
         }
 
-        scanner.nextLine(); // consume newline
+        scanner.nextLine(); 
         return selectedItems;
     }
+    
+     public void showLastUpdate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println("Last updated on: " + formatter.format(lastUpdate));
+    } 
 }

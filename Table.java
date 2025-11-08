@@ -1,13 +1,17 @@
 package restaurantsystem1;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Scanner; 
+import java.util.Scanner;
+
 enum TableStatus {
     AVAILABLE,
     OCCUPIED
 }
 
-public class Table {
+public class Table implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     private int tableNumber;
     private int capacity;
     private TableStatus status;
@@ -21,35 +25,31 @@ public class Table {
      public int getTableNumber() {
         return tableNumber;
     }
-
+        public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
+    }
     public int getCapacity() {
         return capacity;
     }
-
+     public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
     public TableStatus getStatus() {
         return status;
     }
-
-    public boolean isAvailable() {
-        return status == TableStatus.AVAILABLE;
-    }
-
-    public void setTableNumber(int tableNumber) {
-        this.tableNumber = tableNumber;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
     public void setStatus(TableStatus status) {
         this.status = status;
     }
 
-    
 
     
-    public static Table selectTable(ArrayList<Table> tables, Scanner scanner) {
+    
+    public boolean isAvailable()
+    {
+        return status == TableStatus.AVAILABLE;
+    }
+       
+ public static Table selectTable(ArrayList<Table> tables, Scanner scanner) {
         System.out.println("\n========== AVAILABLE TABLES ==========");
         ArrayList<Table> availableTables = new ArrayList<>();
 
@@ -81,7 +81,8 @@ public class Table {
 
    
    
-    public boolean assignTable() {
+    public boolean assignTable() 
+    {
         if (this.isAvailable()) {
             status = TableStatus.OCCUPIED;
             System.out.println("Table " + tableNumber + " has been assigned.");
@@ -92,7 +93,8 @@ public class Table {
         }
     }
 
-    public void releaseTable() {
+    public void releaseTable() 
+    {
         status = TableStatus.AVAILABLE;
         System.out.println("Table " + tableNumber + " is now available.");
     }

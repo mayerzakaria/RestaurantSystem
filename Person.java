@@ -3,9 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package restaurantsystem1;
+
+import java.io.Serializable;
 import java.util.*;
 
-public  abstract class Person {
+public abstract class Person implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     protected String id;
     protected String name;
     protected String email;
@@ -29,20 +33,12 @@ public  abstract class Person {
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+    public String getId() {return id;}
+    public void setId(String id) { this.id = id;}
+    
+    
+    
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-    
-    
-    
-    public String getDetails() {
-        return "Name: " + name + "\nEmail: " + email + "\nPhone: " + phoneNumber;
-    }
     
   public void updateInfo(String newName, String newEmail, String newPhone) {
         setName(newName);
@@ -50,8 +46,11 @@ public  abstract class Person {
         setPhoneNumber(newPhone);
         System.out.println(" Information updated successfully!");
     }
+  
+  
      public boolean login(String inputId, String inputPassword) {
-        if (this.id.equalsIgnoreCase(inputId) && this.password.equals(inputPassword)) {
+        if (this.id != null && this.id.equalsIgnoreCase(inputId) && 
+            this.password != null && this.password.equals(inputPassword)) {
             System.out.println(" Login successful! Welcome, " + name);
             return true;
         } else {
@@ -59,10 +58,15 @@ public  abstract class Person {
             return false;
         }
     }
-    
-    
+
+
+   
     public void makeOrder() {        
         System.out.println(name + " is making an order...");
+    }
+    
+        public String getDetails() {
+        return "Name: " + name + "\nEmail: " + email + "\nPhone: " + phoneNumber;
     }
     
 }

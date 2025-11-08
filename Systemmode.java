@@ -6,7 +6,7 @@ package restaurantsystem1;
 
 
 public enum Systemmode {
-    online_delivery,
-    walk_in ,
-    takeAway
+    ONLINE_DELIVERY,
+    TAKEAWAY,
+    DINE_IN
 }
