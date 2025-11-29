@@ -7,12 +7,40 @@ public class Menu implements Serializable{
     private static final long serialVersionUID=1L;
     private Date lastUpdate;
     private ArrayList<MenuItem> items;
+      private int menuId;
+    private String name; 
+    private String description; 
 
     public Menu() {
         this.lastUpdate = new Date();
         this.items = new ArrayList<>();
     }
 
+     public int getMenuId() {
+        return menuId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    
+    public void setMenuId(int menuId) {
+        this.menuId = menuId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
     public Date getLastUpdate() {
         return lastUpdate;
     }

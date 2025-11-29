@@ -6,9 +6,7 @@ import java.util.*;
 public class Table implements Serializable{
     private static final long serialVersionUID = 1L;
 ;
-    /**
-     * Table status enum
-     */
+    
     public enum TableStatus {
         AVAILABLE,
         OCCUPIED
