@@ -5,22 +5,22 @@ import java.io.Serializable;
 public class MenuItem implements Serializable {
     private static final long serialVersionUID = 1L;
     
-    private int itemId;      // Added for database ID
-    private int menuId;      // Added to link to menu
+    private int itemId;      
+    private int menuId;    
     private String name;
     private String description;
     private double price;
     private String category;
     private boolean isAvailable;
 
-    public MenuItem(int itemId, int menuId, String name, String description, double price, String category, boolean isAvailable) {
+    public MenuItem(int itemId, String name, String description, double price, String category, boolean isAvailable,int menuId ) {
         this.itemId = itemId;
-        this.menuId = menuId;
         this.name = name;
         this.description = description;
         this.price = price;
         this.category = category;
         this.isAvailable = isAvailable;
+        this.menuId = menuId;
     }
 
   

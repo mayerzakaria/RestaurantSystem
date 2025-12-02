@@ -5,11 +5,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class Order implements Serializable {
+public class Order implements Serializable 
+{
     private static final long serialVersionUID = 1L;
     
     private static int orderCounter = 1;
-    
+    private Cashier assignedCashier;
     private int orderId;
     private LocalDateTime orderDate;
     private Map<MenuItem, Integer> items;
@@ -43,8 +44,8 @@ public class Order implements Serializable {
         calculateSubtotal();
     }
     
-    public Order(String customerId, Map<MenuItem, Integer> items, 
-             Systemmode orderType, Address deliveryAddress) {
+    public Order(String customerId, Map<MenuItem, Integer> items,  Systemmode orderType, Address deliveryAddress) 
+    {
         this.orderId = orderCounter++;
         this.orderDate = LocalDateTime.now();
         this.items = new HashMap<>(items);
@@ -72,82 +73,115 @@ public class Order implements Serializable {
     
         this.assignedDelivery = null;
 }
+    
+    public Order() {
+    this.items = new HashMap<>();
+    this.status = Status.PENDING;
+    this.orderType = Systemmode.DINE_IN; 
+}
+    
+    
 
+
+
+
+public Cashier getAssignedCashier() {
+    return assignedCashier;
+}
+public void setAssignedCashier(Cashier cashier) {
+    this.assignedCashier = cashier;
+}
+public String getCashierId() {
+    return assignedCashier != null ? assignedCashier.getId() : null;
+}
     public int getOrderId() {
         return orderId;
     }
-
     public LocalDateTime getOrderDate() {
         return orderDate;
     }
-
     public Map<MenuItem, Integer> getItems() {
         return items;
     }
-
     public double getSubtotal() {
         return subtotal;
     }
-
     public double getDiscountAmount() {
         return discountAmount;
     }
-
     public double getTotal() {
         return total;
     }
-
     public Status getStatus() {
         return status;
     }
-
     public void setStatus(Status status) {
         this.status = status;
     }
-
     public Payment getPayment() {
         return payment;
     }
-
     public void setPayment(Payment payment) {
         this.payment = payment;
     }
-
     public Address getDeliveryAddress() {
         return deliveryAddress;
     }
-
     public void setDeliveryAddress(Address deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
     }
-
     public Table getTable() {
         return table;
     }
-
     public void setTable(Table table) {
         this.table = table;
     }
-
     public Systemmode getOrderType() {
         return orderType;
     }
-
     public String getCustomerId() {
         return customerId;
-    }
-    
+    } 
     public Delivery getAssignedDelivery() {
         return assignedDelivery;
     }
-
-    public double getDeliveryFee() {
+ public double getDeliveryFee() {
         return deliveryFee;
     }
-
     public String getDeliveryZone() {
         return deliveryZone;
     }
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
+    }
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+    public void setDiscountAmount(double discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+    public void setTotal(double total) {
+        this.total = total;
+    }
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+    public Integer getPaymentId() {
+    return payment != null ? payment.getOrderId(): null;
+}
+
+public Integer getTableNumber() {
+    return table != null ? table.getTableNumber() : null;
+}
+
+public String getDeliveryId() {
+    return assignedDelivery != null ? assignedDelivery.getId() : null;
+    
+    
+}
+    
+    
+    
 
     public void addItem(MenuItem item, int quantity) {
         if (item == null) {
@@ -362,11 +396,6 @@ public class Order implements Serializable {
                ", Total: EGP " + total + "]";
     }
 
-    void updateStatus(Delivery.DeliveryStatus deliveryStatus) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public String getCashierId() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+  
+   
 }

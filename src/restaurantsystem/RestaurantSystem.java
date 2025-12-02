@@ -12,8 +12,7 @@ public class RestaurantSystem
 {
    
     
-    private static void initializeSystem(Menu menu, ArrayList<Table> tables,
-        ArrayList<Cashier> cashiers, ArrayList<Delivery> deliveryPersons) {
+    private static void initializeSystem(Menu menu, ArrayList<Table> tables,ArrayList<Cashier> cashiers, ArrayList<Delivery> deliveryPersons) {
         menu.addItem(new MenuItem("Burger", "Beef burger with cheese", 80.0, "Main", true));
         menu.addItem(new MenuItem("Pizza", "Margherita pizza", 120.0, "Main", true));
         menu.addItem(new MenuItem("Pasta", "Creamy pasta with chicken", 95.0, "Main", true));

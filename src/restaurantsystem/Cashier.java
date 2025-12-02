@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Cashier extends Person {
     private static int empCounter = 1;
-    
+  
     private double salary;
     private String shift;
     private Table assignedTable;
@@ -15,7 +15,13 @@ public class Cashier extends Person {
         this.id = "CH" + String.format("%03d", empCounter++);
         this.salary = salary;
         this.shift = shift;
+    
+    
     }
+
+
+    
+    
 
     public String getEmployeeId() { return id; }
     public double getSalary() { return salary; }

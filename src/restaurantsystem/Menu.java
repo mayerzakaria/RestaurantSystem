@@ -12,8 +12,9 @@ public class Menu implements Serializable{
     private String description; 
 
     public Menu() {
+        this.menuId=menuId;
         this.lastUpdate = new Date();
-        this.items = new ArrayList<>();
+      
     }
 
      public int getMenuId() {

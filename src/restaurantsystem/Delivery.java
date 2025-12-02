@@ -6,7 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-public class Delivery extends Person implements Serializable {
+public class Delivery extends Person implements Serializable 
+{
     private static final long serialVersionUID = 1L;
     private static int deliveryCounter = 1;
     
@@ -287,7 +288,8 @@ public void setCurrentOrder(Order currentOrder) {
         System.out.println(getName() + " is on the way with Order " + currentOrder.getOrderId());
     }
     
-    public void completeDelivery() {
+    public void completeDelivery() 
+    {
         if (currentOrder == null) {
             System.out.println("No order assigned!");
             return;
@@ -321,7 +323,7 @@ public void setCurrentOrder(Order currentOrder) {
         System.out.println("Delivered at: " + actualDeliveryTime.format(timeFormatter));
         System.out.println("=".repeat(60) + "\n");
         
-        currentOrder.updateStatus(DeliveryStatus.DELIVERED);
+        currentOrder.updateStatus(Status.DELIVERED);
         
         this.status = DeliveryStatus.IDLE;
         this.totalDeliveries++;

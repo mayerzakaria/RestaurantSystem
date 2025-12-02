@@ -1,8 +1,8 @@
 package restaurantsystem;
 
+import restaurantsystemdao.CustomerDAO; 
+import java.sql.SQLException;            
 import java.util.*;
-import restaurantsystem.dao.CustomerDAO;
-import util.DB;
 
 public class Customer extends Person {
     private static int idCounter = 1;
@@ -14,6 +14,7 @@ public class Customer extends Person {
     private boolean subscriptionActive;
     private int monthsRemaining;
 
+    // ORIGINAL CONSTRUCTOR - Used for new customer registration
     public Customer(String password, boolean isEliteCustomer,
                     Address address, String name, String email, String phoneNumber) {
         super(name, email, phoneNumber, password);
@@ -24,30 +25,63 @@ public class Customer extends Person {
         this.subscriptionActive = false;
         this.monthsRemaining = 0;
     }
+    
+    // DATABASE CONSTRUCTOR  
+    public Customer(String id, String name, String email, String phoneNumber, 
+                    String password, boolean isEliteCustomer, int dineInCount,
+                    boolean subscriptionActive, int monthsRemaining) {
+        super(name, email, phoneNumber, password);
+        this.id = id;
+        this.isEliteCustomer = isEliteCustomer;
+        this.dineInCount = dineInCount;
+        this.subscriptionActive = subscriptionActive;
+        this.monthsRemaining = monthsRemaining; 
+    }
 
+    // Getters and Setters
     public String getCustomerId() { return id; }
+    
     public boolean isEliteCustomer() { return isEliteCustomer; }
-    public void setEliteCustomer(boolean eliteCustomer) { isEliteCustomer = eliteCustomer; }
+    public void setEliteCustomer(boolean eliteCustomer) { this.isEliteCustomer = eliteCustomer; }
+    
     public Address getAddress() { return address; }
     public void setAddress(Address address) { this.address = address; }
+    
     public int getDineInCount() { return dineInCount; }
+    public void setDineInCount(int count) { this.dineInCount = count; }
+    
     public double getSubscriptionFee() { return subscriptionFee; }
+    
     public boolean isSubscriptionActive() { return subscriptionActive && monthsRemaining > 0; }
     public void setSubscriptionActive(boolean subscriptionActive) { 
         this.subscriptionActive = subscriptionActive; 
     }
+    
     public int getMonthsRemaining() { return monthsRemaining; }
     public void setMonthsRemaining(int monthsRemaining) { this.monthsRemaining = monthsRemaining; }
-public  void setid(String id){
-    this.id = id;
-}
-public void setDineInCount(int count) {
-    this.dineInCount = count;
+    
+    public void setid(String id) { this.id = id; }
+
+    public String getId() {      
+    return this.id;
 }
 
+public String getPhoneNumber() {  
+    return this.phoneNumber;
+}
+
+public String getPassword() {      
+    return this.password;
+}
+
+    
+    
+    
+    // FIXED: Register customer method
     public static void registerCustomer(ArrayList<Customer> customers, Scanner scanner) {
         System.out.println("\n=== CUSTOMER REGISTRATION ===");
         
+        // Validate name
         String name;
         while (true) {
             System.out.print("Enter your name: ");
@@ -62,23 +96,23 @@ public void setDineInCount(int count) {
                 System.out.println(" Name must contain only letters!");
                 continue;
             }
-            
-        
             break;
         }
     
+        // Validate email
         String email;
         while (true) {
             System.out.print("Enter email: ");
             email = scanner.nextLine();
         
             if (!email.contains("@") || !email.contains(".")) {
-                System.out.println(" Invalid email format! Must contain @ and domain (e.g., user@example.com)");
+                System.out.println("Invalid email format! Must contain @ and domain (e.g., user@example.com)");
                 continue;
             }
             break;
         }
     
+        // Validate phone
         String phone;
         while (true) {
             System.out.print("Enter phone number: ");
@@ -93,10 +127,9 @@ public void setDineInCount(int count) {
                 continue;
             }
             if (!phone.matches("\\d+")) {
-                System.out.println(" Phone number must contain only digits!");
+                System.out.println("Phone number must contain only digits!");
                 continue;
             }
-        
             break;
         }
         
@@ -107,18 +140,22 @@ public void setDineInCount(int count) {
         String addressStr = scanner.nextLine();
         Address address = new Address(1, addressStr, true);
         
+        // Create customer object
         Customer customer = new Customer(password, false, address, name, email, phone);
         customers.add(customer);
+        
+        // FIXED: Save to database
         try {
-    CustomerDAO dao = new CustomerDAO(DB.getConnection());
-    dao.addCustomer(customer);
-    System.out.println("✔ Customer saved in database!");
-} catch (Exception e) {
-    System.out.println("❌ Error saving customer: " + e.getMessage());
-}
+            CustomerDAO dao = new CustomerDAO(); // No parameter needed
+            dao.insert(customer); // Use insert() method, not addCustomer()
+            System.out.println(" Customer saved in database!");
+        } catch (SQLException e) {
+            System.out.println(" Error saving customer: " + e.getMessage());
+            e.printStackTrace();
+        }
         
         System.out.println("\n Registration completed!");
-        System.out.println(" Your Customer ID: " + customer.getCustomerId());
+        System.out.println("Your Customer ID: " + customer.getCustomerId());
         System.out.println(" Please login from the main menu to continue.");
     }
     
@@ -137,7 +174,7 @@ public void setDineInCount(int count) {
                 && this.password.equals(inputPassword)) {
             System.out.println(" Login successful! Welcome back, " + getName() + "!");
             System.out.println(" Dine-in Count: " + dineInCount);
-            System.out.println(" Elite Status: " + (isSubscriptionActive() ? "Active" : "Not Active"));
+            System.out.println("⭐ Elite Status: " + (isSubscriptionActive() ? "Active" : "Not Active"));
             return true;
         }
         return false;
@@ -147,9 +184,17 @@ public void setDineInCount(int count) {
         dineInCount++;
         System.out.println(" Dine-in recorded! Total: " + dineInCount);
         
+        // Update in database
+        try {
+            CustomerDAO dao = new CustomerDAO();
+            dao.update(this);
+        } catch (SQLException e) {
+            System.out.println("️ Warning: Could not update database: " + e.getMessage());
+        }
+        
         if (dineInCount >= 5 && !isEliteCustomer) {
             System.out.println("\n" + "=".repeat(60));
-            System.out.println(" CONGRATULATIONS! ");
+            System.out.println(" CONGRATULATIONS! 🎉");
             System.out.println("=".repeat(60));
             System.out.println(" You've earned FREE Elite Membership!");
             System.out.println(" 10% discount on ALL orders activated automatically!");
@@ -157,7 +202,15 @@ public void setDineInCount(int count) {
             
             setEliteCustomer(true);
             setSubscriptionActive(true);
-            setMonthsRemaining(1); 
+            setMonthsRemaining(1);
+            
+            // Update in database
+            try {
+                CustomerDAO dao = new CustomerDAO();
+                dao.update(this);
+            } catch (SQLException e) {
+                System.out.println("️ Warning: Could not update elite status in database: " + e.getMessage());
+            }
         }
     }
     
@@ -181,7 +234,15 @@ public void setDineInCount(int count) {
             setEliteCustomer(true);
             setSubscriptionActive(true);
             setMonthsRemaining(1);
-            System.out.println(" Elite activated! 10% discount on all orders!");
+            System.out.println("Elite activated! 10% discount on all orders!");
+            
+            // Update in database
+            try {
+                CustomerDAO dao = new CustomerDAO();
+                dao.update(this);
+            } catch (SQLException e) {
+                System.out.println("️ Warning: Could not update subscription in database: " + e.getMessage());
+            }
             return true;
         } else if (!paid) {
             System.out.println(" Payment required: EGP " + subscriptionFee);
@@ -195,10 +256,10 @@ public void setDineInCount(int count) {
     @Override
     public String getDetails() {
         return super.getDetails() +
-               "\nCustomer ID: " + id +
+               "\n Customer ID: " + id +
                "\n Elite: " + (isEliteCustomer ? "Yes" : "No") +
                "\n Subscription: " + (isSubscriptionActive() ? "Active" : "Inactive") +
-               "\n Address: " + address.getFullAddress() +
-               "\n Dine-ins: " + dineInCount;
+               "\n Address: " + (address != null ? address.getFullAddress() : "Not set") +
+               "\n️ Dine-ins: " + dineInCount;
     }
 }

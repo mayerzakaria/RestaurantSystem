@@ -4,9 +4,7 @@ import java.util.*;
 
 public class Payment {
 
-    public int getId() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+   
    
     public enum PaymentMethod {
         CASH,
@@ -54,6 +52,10 @@ public class Payment {
 
     public int getOrderId() {
         return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
     

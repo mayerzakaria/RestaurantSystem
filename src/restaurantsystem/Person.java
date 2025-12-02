@@ -23,6 +23,15 @@ public abstract class Person implements Serializable
         this.password = password;
     }
 
+    public Person(String id, String name, String email, String phoneNumber, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+    }
+    
+
     // Getters and Setters
     public String getId() {
         return id;

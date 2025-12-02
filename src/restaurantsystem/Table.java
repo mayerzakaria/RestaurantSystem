@@ -6,6 +6,8 @@ import java.util.*;
 public class Table implements Serializable{
     private static final long serialVersionUID = 1L;
 ;
+
+   
     
     public enum TableStatus {
         AVAILABLE,
@@ -15,11 +17,13 @@ public class Table implements Serializable{
     private int tableNumber;
     private int capacity;
     private TableStatus status;
+    private String cashierid;
 
-    public Table(int tableNumber, int capacity, TableStatus status) {
+    public Table(int tableNumber, int capacity, TableStatus status,String cashierid) {
         this.tableNumber = tableNumber;
         this.capacity = capacity;
         this.status = status;
+        this.cashierid=cashierid;
     }
 
     // Getters and Setters
@@ -51,9 +55,16 @@ public class Table implements Serializable{
         return status == TableStatus.AVAILABLE;
     }
 
-    // ==================== STATIC METHODS ====================
+    public String getCashierid() {
+        return cashierid;
+    }
+
+    public void setCashierid(String cashierid) {
+        this.cashierid = cashierid;
+    }
     
-    //  Select table with capacity check
+
+  
     public static Table selectTableForCapacity(ArrayList<Table> tables, Scanner scanner, int numberOfPeople) {
         ArrayList<Table> available = getAvailableTables(tables);
         ArrayList<Table> suitableTables = new ArrayList<>();
@@ -103,7 +114,7 @@ public class Table implements Serializable{
         }
     }
 
-    // Get all available tables
+  
     public static ArrayList<Table> getAvailableTables(ArrayList<Table> tables) {
         ArrayList<Table> available = new ArrayList<>();
         for (Table table : tables) {
@@ -114,7 +125,7 @@ public class Table implements Serializable{
         return available;
     }
     
-    // ==================== INSTANCE METHODS ====================
+    
 
     public boolean assignTable() {
         if (this.isAvailable()) {

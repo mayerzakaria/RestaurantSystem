@@ -12,11 +12,16 @@ public class Address implements Serializable
     private int addressId;
     private String fullAddress;
     private boolean isDefault;
-
-    public Address(int addressId, String fullAddress, boolean isDefault) {
-        this.addressId = addressId;
-        this.fullAddress = fullAddress;
-        this.isDefault = isDefault;
+    private String customerId;
+    
+   public Address(int addressId, String fullAddress, boolean isDefault, String customerId) 
+   { 
+       this.addressId = addressId; this.fullAddress = fullAddress; this.isDefault = isDefault; this.customerId = customerId; 
+   }
+    public Address(int addressId, String fullAddress, boolean isDefault)
+    { 
+        this(addressId, fullAddress, isDefault, null); 
+    
     }
 
     // Getters and Setters
@@ -43,6 +48,15 @@ public class Address implements Serializable
     public void setIsDefault(boolean isDefault) {
         this.isDefault = isDefault;
     }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+    
     
     
     
