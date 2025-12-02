@@ -17,6 +17,8 @@ public class Payment {
     private PaymentMethod paymentMethod;
     private Status status;
     private int orderId;
+    private int id;  
+
 
     public Payment(double amount, PaymentMethod paymentMethod, int orderId) {
         this.amount = amount;
@@ -58,6 +60,13 @@ public class Payment {
         this.orderId = orderId;
     }
 
+public int getId() {
+    return id;
+}
+
+public void setId(int id) {
+    this.id = id;
+}
     
     
     // Process payment for order (static helper)

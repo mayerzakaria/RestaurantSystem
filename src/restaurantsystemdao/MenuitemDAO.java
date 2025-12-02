@@ -9,17 +9,17 @@ public class MenuitemDAO {
 
     // Insert or update a MenuItem
     public static void insertMenuItem(MenuItem mi) {
-        String sql = "INSERT INTO MenuItem(itemId, name, description, price, category, isAvailable, menuId) "
+        String sql = "INSERT INTO MenuItem(id, name, description, price, category, isAvailable, Menu_id) "
                    + "VALUES (?, ?, ?, ?, ?, ?, ?) "
                    + "ON DUPLICATE KEY UPDATE "
                    + "name = VALUES(name), description = VALUES(description), "
                    + "price = VALUES(price), category = VALUES(category), "
-                   + "isAvailable = VALUES(isAvailable), menuId = VALUES(menuId)";
+                   + "isAvailable = VALUES(isAvailable), Menu_id = VALUES(Menu_id)";
 
         try (Connection conn = DB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, mi.getItemId());
+            ps.setInt(1, mi.getItemId());  // id
             ps.setString(2, mi.getName());           
             ps.setString(3, mi.getDescription());   
             ps.setDouble(4, mi.getPrice());          
@@ -29,58 +29,58 @@ public class MenuitemDAO {
 
             int rows = ps.executeUpdate();
             if (rows > 0) {
-                System.out.println(" MenuItem added/updated: " + mi.getName());
+                System.out.println("MenuItem added/updated: " + mi.getName());
             }
 
         } catch (SQLException e) {
-            System.err.println(" Error inserting/updating MenuItem: " + e.getMessage());
+            System.err.println("Error inserting/updating MenuItem: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     // Find MenuItem by ID
-    public static MenuItem findMenuItemById(int itemId) {
-        String sql = "SELECT * FROM MenuItem WHERE itemId = ?";
+    public static MenuItem findMenuItemById(int id) {
+        String sql = "SELECT * FROM MenuItem WHERE id = ?";
         try (Connection conn = DB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, itemId);
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return new MenuItem(
-                    rs.getInt("itemId"),
+                    rs.getInt("id"),
                     rs.getString("name"),
                     rs.getString("description"),
                     rs.getDouble("price"),
                     rs.getString("category"),
                     rs.getBoolean("isAvailable"), 
-                    rs.getInt("menuId")
+                    rs.getInt("Menu_id")
                 );
             }
 
         } catch (SQLException e) {
-            System.err.println(" Error finding MenuItem: " + e.getMessage());
+            System.err.println("Error finding MenuItem: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
     }
 
     // Delete MenuItem by ID
-    public static void deleteMenuItem(int itemId) {
-        String sql = "DELETE FROM MenuItem WHERE itemId = ?";
+    public static void deleteMenuItem(int id) {
+        String sql = "DELETE FROM MenuItem WHERE id = ?";
         try (Connection conn = DB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, itemId);
+            ps.setInt(1, id);
             int rows = ps.executeUpdate();
             if (rows > 0) {
-                System.out.println(" MenuItem deleted: " + itemId);
+                System.out.println("MenuItem deleted: " + id);
             } else {
-                System.out.println(" No MenuItem found with ID: " + itemId);
+                System.out.println("No MenuItem found with ID: " + id);
             }
 
         } catch (SQLException e) {
-            System.err.println(" Error deleting MenuItem: " + e.getMessage());
+            System.err.println("Error deleting MenuItem: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -95,18 +95,18 @@ public class MenuitemDAO {
 
             while (rs.next()) {
                 items.add(new MenuItem(
-                    rs.getInt("itemId"),
+                    rs.getInt("id"),
                     rs.getString("name"),
                     rs.getString("description"),
                     rs.getDouble("price"),
                     rs.getString("category"),
                     rs.getBoolean("isAvailable"),
-                    rs.getInt("menuId")
+                    rs.getInt("Menu_id")
                 ));
             }
 
         } catch (SQLException e) {
-            System.err.println(" Error listing MenuItems: " + e.getMessage());
+            System.err.println("Error listing MenuItems: " + e.getMessage());
             e.printStackTrace();
         }
         return items;

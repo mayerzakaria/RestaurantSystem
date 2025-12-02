@@ -19,13 +19,15 @@ public class Table implements Serializable{
     private TableStatus status;
     private String cashierid;
 
-    public Table(int tableNumber, int capacity, TableStatus status,String cashierid) {
+   public Table(int tableNumber, int capacity, TableStatus status, String cashierid) {
+        if (cashierid == null || cashierid.isEmpty()) {
+            throw new IllegalArgumentException("Cashier ID cannot be null or empty!");
+        }
         this.tableNumber = tableNumber;
         this.capacity = capacity;
         this.status = status;
-        this.cashierid=cashierid;
+        this.cashierid = cashierid;
     }
-
     // Getters and Setters
     public int getTableNumber() {
         return tableNumber;
@@ -59,7 +61,10 @@ public class Table implements Serializable{
         return cashierid;
     }
 
-    public void setCashierid(String cashierid) {
+   public void setCashierid(String cashierid) {
+        if (cashierid == null || cashierid.isEmpty()) {
+            throw new IllegalArgumentException("Cashier ID cannot be null or empty!");
+        }
         this.cashierid = cashierid;
     }
     

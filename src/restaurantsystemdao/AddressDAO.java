@@ -13,7 +13,7 @@ public class AddressDAO {
 // Insert a new address
 public static void insertAddress(Address address) 
 {
-    String sql = "INSERT INTO Address(addressId, fullAddress, isDefault, customerId) " +
+    String sql = "INSERT INTO Address(id, fullAddress, isDefault, customerId) " +
                  "VALUES (?, ?, ?, ?) " +
                  "ON DUPLICATE KEY UPDATE fullAddress = VALUES(fullAddress), " +
                  "isDefault = VALUES(isDefault), customerId = VALUES(customerId)";
@@ -21,7 +21,7 @@ public static void insertAddress(Address address)
     try (Connection conn = DB.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        ps.setInt(1, address.getAddressId());
+        ps.setInt(1, address.getId());
         ps.setString(2, address.getFullAddress());
         ps.setBoolean(3, address.isDefault());
         ps.setString(4, address.getCustomerId());
@@ -40,7 +40,7 @@ public static void insertAddress(Address address)
 // Get an address by ID
 public static Address getAddressById(int addressId) 
 {
-    String sql = "SELECT * FROM Address WHERE addressId = ?";
+    String sql = "SELECT * FROM Address WHERE id = ?";
     try (Connection conn = DB.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -49,7 +49,7 @@ public static Address getAddressById(int addressId)
 
         if (rs.next()) {
             return new Address(
-                rs.getInt("addressId"),
+                rs.getInt("id"),
                 rs.getString("fullAddress"),
                 rs.getBoolean("isDefault"),
                 rs.getString("customerId")
@@ -74,7 +74,7 @@ public static List<Address> getAllAddresses() {
 
         while (rs.next()) {
             addresses.add(new Address(
-                rs.getInt("addressId"),
+                rs.getInt("id"),
                 rs.getString("fullAddress"),
                 rs.getBoolean("isDefault"),
                 rs.getString("customerId")
@@ -91,7 +91,7 @@ public static List<Address> getAllAddresses() {
 
 // Update an address
 public static void updateAddress(Address address) {
-    String sql = "UPDATE Address SET fullAddress = ?, isDefault = ?, customerId = ? WHERE addressId = ?";
+    String sql = "UPDATE Address SET fullAddress = ?, isDefault = ?, customerId = ? WHERE id = ?";
 
     try (Connection conn = DB.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -99,7 +99,7 @@ public static void updateAddress(Address address) {
         ps.setString(1, address.getFullAddress());
         ps.setBoolean(2, address.isDefault());
         ps.setString(3, address.getCustomerId());
-        ps.setInt(4, address.getAddressId());
+        ps.setInt(4, address.getId());
 
         int rows = ps.executeUpdate();
         if (rows > 0) {
@@ -113,16 +113,16 @@ public static void updateAddress(Address address) {
 }
 
 // Delete an address
-public static void deleteAddress(int addressId) {
-    String sql = "DELETE FROM Address WHERE addressId = ?";
+public static void deleteAddress(int id) {
+    String sql = "DELETE FROM Address WHERE id = ?";
 
     try (Connection conn = DB.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        ps.setInt(1, addressId);
+        ps.setInt(1, id);
         int rows = ps.executeUpdate();
         if (rows > 0) {
-            System.out.println("Address deleted with ID: " + addressId);
+            System.out.println("Address deleted with ID: " + id);
         }
 
     } catch (SQLException e) {
@@ -144,7 +144,7 @@ public static List<Address> getAddressesByCustomerId(String customerId) {
 
         while (rs.next()) {
             addresses.add(new Address(
-                rs.getInt("addressId"),
+                rs.getInt("id"),
                 rs.getString("fullAddress"),
                 rs.getBoolean("isDefault"),
                 rs.getString("customerId")

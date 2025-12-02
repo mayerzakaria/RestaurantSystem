@@ -9,28 +9,28 @@ public class Address implements Serializable
     
     private static final long serialVersionUID = 1L;
     
-    private int addressId;
+    private int id;
     private String fullAddress;
     private boolean isDefault;
     private String customerId;
     
-   public Address(int addressId, String fullAddress, boolean isDefault, String customerId) 
+   public Address(int id, String fullAddress, boolean isDefault, String customerId) 
    { 
-       this.addressId = addressId; this.fullAddress = fullAddress; this.isDefault = isDefault; this.customerId = customerId; 
+       this.id = id; this.fullAddress = fullAddress; this.isDefault = isDefault; this.customerId = customerId; 
    }
-    public Address(int addressId, String fullAddress, boolean isDefault)
+    public Address(int id, String fullAddress, boolean isDefault)
     { 
-        this(addressId, fullAddress, isDefault, null); 
+        this(id, fullAddress, isDefault, null); 
     
     }
 
     // Getters and Setters
-    public int getAddressId() {
-        return addressId;
+    public int getId() {
+        return id;
     }
 
-    public void setAddressId(int addressId) {
-        this.addressId = addressId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFullAddress() {
@@ -75,7 +75,7 @@ public class Address implements Serializable
 
     @Override
     public String toString() {
-        return "Address ID: " + addressId + 
+        return "Address ID: " + id + 
                "\nFull Address: " + fullAddress + 
                "\nDefault: " + (isDefault ? "Yes" : "No");
     }
