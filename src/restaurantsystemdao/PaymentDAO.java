@@ -7,7 +7,7 @@ import util.DB;
 
 public class PaymentDAO {
 
-    // Insert a new payment into the DB and return the generated ID
+  
     public int insert(Payment payment) throws SQLException {
         String sql = "INSERT INTO Payment(amount, paymentMethod, status) VALUES (?, ?, ?)";
 
@@ -23,7 +23,7 @@ public class PaymentDAO {
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 int generatedId = rs.getInt(1);
-                payment.setId(generatedId); // store DB id in the Payment object
+                payment.setId(generatedId); 
                 System.out.println("Payment added successfully, DB ID: " + generatedId);
                 return generatedId;
             }
@@ -31,7 +31,7 @@ public class PaymentDAO {
         return -1;
     }
 
-    // Find a payment by its database ID
+    
     public Payment findById(int paymentId) throws SQLException {
         String sql = "SELECT * FROM Payment WHERE id = ?";
 
@@ -82,4 +82,19 @@ public class PaymentDAO {
             System.out.println("Payment deleted: ID " + paymentId);
         }
     }
+    // Get the last inserted payment ID
+public static int getLastPaymentId() throws SQLException {
+    String sql = "SELECT id FROM Payment ORDER BY id DESC LIMIT 1";
+
+    try (Connection conn = DB.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("id");
+        }
+    }
+    return -1; 
+}
+
 }

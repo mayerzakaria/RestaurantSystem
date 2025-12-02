@@ -76,4 +76,19 @@ public class OrderDAO {
         }
         return null;
     }
+    // Get the last inserted Order ID
+public static int getLastOrderId() throws SQLException {
+    String sql = "SELECT idOrder FROM `Order` ORDER BY idOrder DESC LIMIT 1";
+
+    try (Connection conn = DB.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("idOrder");
+        }
+    }
+    return -1; 
+}
+
 }

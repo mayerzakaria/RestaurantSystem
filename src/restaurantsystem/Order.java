@@ -1,15 +1,17 @@
 package restaurantsystem;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import restaurantsystemdao.OrderDAO;
 
 public class Order implements Serializable 
 {
     private static final long serialVersionUID = 1L;
     
-    private static int orderCounter = 1;
+    private static int orderCounter ;
     private Cashier assignedCashier;
     private int orderId;
     private LocalDateTime orderDate;
@@ -27,9 +29,20 @@ public class Order implements Serializable
     private Delivery assignedDelivery;
     private double deliveryFee;
     private String deliveryZone;
-
+    static{
+    try {
+        orderCounter = OrderDAO.getLastOrderId();
+        if(orderCounter == -1) {
+            orderCounter = 1;
+        } else {
+            orderCounter++;  // مهم جداً!
+        }
+    }   catch (SQLException ex) {
+            System.getLogger(Order.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+}
     public Order(String customerId, Map<MenuItem, Integer> items, 
-                 Systemmode orderType, Table table) {
+                 Systemmode orderType, Table table,Cashier assignedCashier) {
         this.orderId = orderCounter++;
         this.orderDate = LocalDateTime.now();
         this.items = new HashMap<>(items);
@@ -41,6 +54,7 @@ public class Order implements Serializable
         this.deliveryFee = 0.0;
         this.deliveryZone = null;
         this.assignedDelivery = null;
+        this.assignedCashier=assignedCashier;
         calculateSubtotal();
     }
     

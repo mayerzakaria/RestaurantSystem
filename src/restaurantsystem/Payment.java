@@ -1,6 +1,8 @@
 package restaurantsystem;
 
+import java.sql.SQLException;
 import java.util.*;
+import restaurantsystemdao.PaymentDAO;
 
 public class Payment {
 
@@ -12,15 +14,30 @@ public class Payment {
         CREDIT_CARD,
         MOBILE_WALLET
     }
-    
+    private static int nextId;
     private double amount;
     private PaymentMethod paymentMethod;
     private Status status;
     private int orderId;
     private int id;  
+    static{
+       
+    try {
+        nextId = PaymentDAO.getLastPaymentId();
+        if(nextId == -1) {
+            nextId = 1;  
+        } else {
+            nextId++; 
+        }
+    
 
-
+    }   catch (SQLException ex) {
+            System.getLogger(Payment.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }
     public Payment(double amount, PaymentMethod paymentMethod, int orderId) {
+        
+        this.id = nextId++;
         this.amount = amount;
         this.paymentMethod = paymentMethod;
         this.orderId = orderId;

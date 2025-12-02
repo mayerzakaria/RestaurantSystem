@@ -55,7 +55,7 @@ public class Cashier extends Person {
         System.out.println(" Cashier: " + getName());
         System.out.println(" Customer: " + customer.getName());
 
-        Order order = new Order(customer.getCustomerId(), items, Systemmode.TAKEAWAY, (Table) null);
+        Order order = new Order(customer.getCustomerId(), items, Systemmode.TAKEAWAY, (Table) null,this);
         order.calculateSubtotal();
         order.applyEliteDiscount(customer.isEliteCustomer(), customer.isSubscriptionActive());
         order.calculateTotal();
@@ -103,7 +103,7 @@ public class Cashier extends Person {
         this.assignedTable = selectedTable; 
         customer.incrementDineInCount();
 
-        Order order = new Order(customer.getCustomerId(), items, Systemmode.DINE_IN, selectedTable);
+        Order order = new Order(customer.getCustomerId(), items, Systemmode.DINE_IN, selectedTable,this);
         order.calculateSubtotal();
         order.applyEliteDiscount(customer.isEliteCustomer(), customer.isSubscriptionActive());
         order.calculateTotal();
