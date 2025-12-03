@@ -14,7 +14,7 @@ public class Menu implements Serializable{
     public Menu() {
         this.menuId=menuId;
         this.lastUpdate = new Date();
-      
+      this.items = new ArrayList<>(); 
     }
 
      public int getMenuId() {
@@ -54,7 +54,8 @@ public class Menu implements Serializable{
         this.lastUpdate = new Date();
     }
 
-    public boolean addItem(MenuItem item) {
+    public boolean addItem(MenuItem item) 
+    {
         if (item == null) {
             System.out.println(" Error: Cannot add null item");
             return false;
@@ -69,7 +70,6 @@ public class Menu implements Serializable{
 
         items.add(item);
         updateLastUpdate();
-        System.out.println(item.getName() + " added to menu!");
         return true;
     }
 

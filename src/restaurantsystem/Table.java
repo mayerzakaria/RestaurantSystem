@@ -70,7 +70,8 @@ public class Table implements Serializable{
     
 
   
-    public static Table selectTableForCapacity(ArrayList<Table> tables, Scanner scanner, int numberOfPeople) {
+    public static Table selectTableForCapacity(ArrayList<Table> tables, Scanner scanner, int numberOfPeople) 
+    {
         ArrayList<Table> available = getAvailableTables(tables);
         ArrayList<Table> suitableTables = new ArrayList<>();
         

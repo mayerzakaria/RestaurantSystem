@@ -169,12 +169,13 @@ public String getPassword() {
     }
     
     @Override
-    public boolean login(String inputUsername, String inputPassword) {
+    public boolean login(String inputUsername, String inputPassword)
+    {
         if ((this.id.equals(inputUsername))
                 && this.password.equals(inputPassword)) {
             System.out.println(" Login successful! Welcome back, " + getName() + "!");
             System.out.println(" Dine-in Count: " + dineInCount);
-            System.out.println("⭐ Elite Status: " + (isSubscriptionActive() ? "Active" : "Not Active"));
+            System.out.println( "  Elite Status: " + (isSubscriptionActive() ? "Active" : "Not Active"));
             return true;
         }
         return false;

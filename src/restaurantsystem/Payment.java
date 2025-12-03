@@ -43,6 +43,11 @@ public class Payment {
         this.orderId = orderId;
         this.status = Status.PENDING;
     }
+  
+    public Payment() {
+        this.status = Status.PENDING;
+    }
+    
 
     // Getters and Setters
     public double getAmount() {

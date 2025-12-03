@@ -64,38 +64,41 @@ public class CashierDAO {
             ps.executeUpdate();
         }
     }
-     public static Cashier findById(String cashierId) throws SQLException {
+    
+    
+  public static Cashier findById(String cashierId) throws SQLException {
         String sql = "SELECT p.id, p.name, p.email, p.phonenumber, p.password, " +
                      "c.Salary, c.shift " +
                      "FROM Person p " +
                      "INNER JOIN Cashier c ON p.id = c.Cashierid " +
                      "WHERE p.id = ?";
-        
+
         try (Connection conn = DB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            
+
             ps.setString(1, cashierId);
             ResultSet rs = ps.executeQuery();
-            
+
             if (rs.next()) {
-                // Create Cashier object with data from both tables
-                Cashier cashier = new Cashier(
+                // Create Cashier object with ID from database
+                return new Cashier(
+                    rs.getString("id"),
                     rs.getString("name"),
                     rs.getString("email"),
                     rs.getString("phonenumber"),
                     rs.getString("password"),
-                    
                     rs.getDouble("Salary"),
                     rs.getString("shift")
                 );
-                
-                return cashier;
             }
         }
-        
+
         return null; // Cashier not found
     }
-     public static ArrayList<Cashier> getAllCashiers() throws SQLException {
+  
+  
+  
+  public static ArrayList<Cashier> getAllCashiers() throws SQLException {
         ArrayList<Cashier> cashiers = new ArrayList<>();
         String sql = "SELECT p.id, p.name, p.email, p.phonenumber, p.password, " +
                      "c.Salary, c.shift " +
@@ -108,6 +111,7 @@ public class CashierDAO {
 
             while (rs.next()) {
                 cashiers.add(new Cashier(
+                    rs.getString("id"),
                     rs.getString("name"),
                     rs.getString("email"),
                     rs.getString("phonenumber"),
@@ -119,4 +123,5 @@ public class CashierDAO {
         }
         return cashiers;
     }
+
 }

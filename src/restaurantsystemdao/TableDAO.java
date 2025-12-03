@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import restaurantsystem.Table;
 import util.DB;
 
-public class TableDAO {
+public class TableDAO 
+{
 
     public static void insertRestaurantTable(Table t) {
         if (t.getCashierid() == null || t.getCashierid().isEmpty()) {
@@ -95,5 +96,24 @@ public class TableDAO {
             e.printStackTrace();
         }
         return tables;
+    }
+    
+    
+   public static void update(Table table) throws SQLException {
+        String sql = "UPDATE `Table` SET `capacity`=?, `Tablestatus`=?, `Cashierid`=? WHERE `tablenumber`=?";
+
+        try (Connection conn = DB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, table.getCapacity());
+            ps.setString(2, table.getStatus().name());
+            ps.setString(3, table.getCashierid());
+            ps.setInt(4, table.getTableNumber());
+
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                System.out.println("Table updated: " + table.getTableNumber());
+            }
+        }
     }
 }

@@ -76,7 +76,7 @@ public class OrderDAO {
         }
         return null;
     }
-    // Get the last inserted Order ID
+
 public static int getLastOrderId() throws SQLException {
     String sql = "SELECT idOrder FROM `Order` ORDER BY idOrder DESC LIMIT 1";
 

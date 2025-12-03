@@ -2,22 +2,24 @@ package restaurantsystem;
 
 import java.util.*;
 
-public class Cashier extends Person {
-    private static int empCounter = 1;
-  
+public class Cashier extends Person 
+{
+    private static int empCounter = 1; 
     private double salary;
     private String shift;
     private Table assignedTable;
 
-    public Cashier(String name, String email, String phoneNumber, String password,
+
+    
+    public Cashier(String id, String name, String email, String phoneNumber, String password,
                    double salary, String shift) {
-        super(name, email, phoneNumber, password);
-        this.id = "CA" + String.format("%03d", empCounter++);
+        super(id, name, email, phoneNumber, password);
         this.salary = salary;
         this.shift = shift;
-    
-    
     }
+    
+    
+    
 
 
     
@@ -41,7 +43,8 @@ public class Cashier extends Person {
     }
     
     @Override
-    public boolean login(String inputId, String inputPassword) {
+    public boolean login(String inputId, String inputPassword) 
+    {
         if (super.login(inputId, inputPassword)) {
             System.out.println(" Cashier ID: " + id);
             System.out.println(" Shift: " + shift);
@@ -50,7 +53,8 @@ public class Cashier extends Person {
         return false;
     }
 
-    public Order processTakeawayOrder(Customer customer, Map<MenuItem, Integer> items) {
+    public Order processTakeawayOrder(Customer customer, Map<MenuItem, Integer> items) 
+    {
         System.out.println("\n=== PROCESSING TAKEAWAY ORDER ===");
         System.out.println(" Cashier: " + getName());
         System.out.println(" Customer: " + customer.getName());
@@ -67,9 +71,10 @@ public class Cashier extends Person {
         
         return order;
     }
+    
 
-    public Order processWalkInOrder(Customer customer, Map<MenuItem, Integer> items, 
-                               ArrayList<Table> tables, Scanner scanner) {
+    public Order processWalkInOrder(Customer customer, Map<MenuItem, Integer> items,  ArrayList<Table> tables, Scanner scanner) 
+    {
         System.out.println("\n=== PROCESSING DINE-IN ORDER ===");
         System.out.println(" Cashier: " + getName());
         System.out.println(" Customer: " + customer.getName());
@@ -85,7 +90,8 @@ public class Cashier extends Person {
                 System.out.println(" Invalid number of people!");
                 return null;
             }
-        } catch (InputMismatchException e) {
+        } catch (InputMismatchException e) 
+        {
             System.out.println(" Invalid input!");
             scanner.nextLine();
             return null;
@@ -115,7 +121,8 @@ public class Cashier extends Person {
         return order;
     }
 
-    public boolean acceptPayment(Order order, double paymentAmount, Payment.PaymentMethod paymentMethod) {
+    public boolean acceptPayment(Order order, double paymentAmount, Payment.PaymentMethod paymentMethod) 
+    {
         if (order == null) {
             System.out.println(" Error: No order!");
             return false;

@@ -12,7 +12,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DB {
+public class DB 
+{
 private static final String URL = "jdbc:mysql://localhost:3306/RestaurantOrderSystem";
 private static final String USER = "root";
   private static final String PASSWORD = ""; 

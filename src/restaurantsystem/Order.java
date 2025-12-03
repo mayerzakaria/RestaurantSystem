@@ -35,7 +35,7 @@ public class Order implements Serializable
         if(orderCounter == -1) {
             orderCounter = 1;
         } else {
-            orderCounter++;  // مهم جداً!
+            orderCounter++;  
         }
     }   catch (SQLException ex) {
             System.getLogger(Order.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
@@ -86,13 +86,13 @@ public class Order implements Serializable
         }
     
         this.assignedDelivery = null;
-}
+     }
     
     public Order() {
     this.items = new HashMap<>();
     this.status = Status.PENDING;
     this.orderType = Systemmode.DINE_IN; 
-}
+    }
     
     
 
@@ -181,21 +181,30 @@ public String getCashierId() {
         this.orderId = orderId;
     }
     public Integer getPaymentId() {
-    return payment != null ? payment.getOrderId(): null;
+        return payment != null ? payment.getId() : null;
+    }
+    public Integer getTableNumber() {
+        return table != null ? table.getTableNumber() : null;
+    }
+    public String getDeliveryId() {
+        return assignedDelivery != null ? assignedDelivery.getId() : null;
 }
-
-public Integer getTableNumber() {
-    return table != null ? table.getTableNumber() : null;
-}
-
-public String getDeliveryId() {
-    return assignedDelivery != null ? assignedDelivery.getId() : null;
-    
-    
-}
+    public void setOrderType(Systemmode orderType) {
+        this.orderType = orderType;
+    }
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
     
     
     
+    public void setPaymentId(Integer paymentId) {
+        if (paymentId != null) 
+        {
+            this.payment = new Payment();
+            this.payment.setId(paymentId);
+        }
+    }
 
     public void addItem(MenuItem item, int quantity) {
         if (item == null) {
@@ -408,8 +417,5 @@ public String getDeliveryId() {
     public String toString() {
         return "Order #" + orderId + " [" + orderType + ", Status: " + status + 
                ", Total: EGP " + total + "]";
-    }
-
-  
-   
+    }  
 }

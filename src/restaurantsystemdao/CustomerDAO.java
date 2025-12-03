@@ -4,38 +4,49 @@ import java.sql.*;
 import java.util.ArrayList;
 import restaurantsystem.Customer;
 import util.DB;
+import java.util.regex.*;
 
-public class CustomerDAO {
+
+
+
+
+public class CustomerDAO 
+{
     
-    /**
-     * Get the next available customer ID from database
-     */
-    private static String getNextCustomerId() throws SQLException {
-        String sql = "SELECT id FROM Person WHERE id LIKE 'C%' ORDER BY id DESC LIMIT 1";
-        
+ 
+private static String getNextCustomerId() throws SQLException {
+        // Fetch all candidate IDs that start with 'C' and determine the maximum numeric suffix in Java
+        String sql = "SELECT id FROM Person WHERE id LIKE 'C%'";
+        int maxNumber = 0;
         try (Connection conn = DB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-            
-            if (rs.next()) {
-                String lastId = rs.getString("id");
-               
-                int lastNumber = Integer.parseInt(lastId.substring(4));
-                int nextNumber = lastNumber + 1;
-                return "C" + String.format("%03d", nextNumber);
-            } else {
-                // No customers exist yet, start from CUST001
-                return "C001";
+
+            while (rs.next()) {
+                String id = rs.getString("id");
+                // Split on any non-digit characters and take the last numeric token
+                String[] parts = id.split("\\D+");
+                if (parts.length > 0) {
+                    String numStr = parts[parts.length - 1];
+                    if (!numStr.isEmpty()) {
+                        try {
+                            int num = Integer.parseInt(numStr);
+                            if (num > maxNumber) maxNumber = num;
+                        } catch (NumberFormatException ex) {
+                            // ignore malformed numeric parts
+                        }
+                    }
+                }
             }
         }
+
+        int nextNumber = maxNumber + 1;
+        return "C" + String.format("%03d", nextNumber);
     }
     
-    /**
-     * Insert customer - handles both Person and Customer tables
-     * Uses transaction to ensure data consistency
-     * Automatically generates customer ID from database
-     */
-    public void insert(Customer customer) throws SQLException {
+  
+    public void insert(Customer customer) throws SQLException 
+    {
         Connection conn = null;
         try {
             conn = DB.getConnection();
@@ -52,7 +63,7 @@ public class CustomerDAO {
             insertCustomerDetails(conn, customer);
             
             conn.commit(); // Commit transaction
-            System.out.println("✔ Customer added successfully: " + customer.getName());
+            System.out.println(" Customer added successfully: " + customer.getName());
             
         } catch (SQLException e) {
             if (conn != null) {
@@ -151,7 +162,8 @@ public class CustomerDAO {
     /**
      * Update customer details in database
      */
-    public void update(Customer customer) throws SQLException {
+    public void update(Customer customer) throws SQLException 
+    {
         Connection conn = null;
         try {
             conn = DB.getConnection();
@@ -176,7 +188,8 @@ public class CustomerDAO {
         }
     }
     
-    private void updatePerson(Connection conn, Customer customer) throws SQLException {
+    private void updatePerson(Connection conn, Customer customer) throws SQLException 
+    {
         String sql = "UPDATE Person SET name=?, email=?, phonenumber=?, password=? WHERE id=?";
         
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -189,7 +202,8 @@ public class CustomerDAO {
         }
     }
     
-    private void updateCustomerDetails(Connection conn, Customer customer) throws SQLException {
+    private void updateCustomerDetails(Connection conn, Customer customer) throws SQLException 
+    {
         String sql = "UPDATE Customer SET Iselitecustomer=?, dineincount=?, " +
                      "subscriptionactive=?, monthremaining=? WHERE customerid=?";
         
@@ -203,9 +217,8 @@ public class CustomerDAO {
         }
     }
 
-    /**
-     * Get all customers from database
-     */
+    
+    
     public static ArrayList<Customer> getAllCustomers() throws SQLException {
         ArrayList<Customer> customers = new ArrayList<>();
         String sql = "SELECT p.id, p.name, p.email, p.phonenumber, p.password, " +

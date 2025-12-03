@@ -1,10 +1,13 @@
 package restaurantsystem;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import restaurantsystemdao.DeliveryDAO;
+import restaurantsystemdao.OrderDAO; 
 
 public class Delivery extends Person implements Serializable 
 {
@@ -205,7 +208,8 @@ public void setCurrentOrder(Order currentOrder) {
         return ZONE_MAP.containsKey(zoneKey);
     }
     
-    public boolean acceptOrder(Order order) {
+    public boolean acceptOrder(Order order) 
+    {
         if (!isAvailable) {
             System.out.println(getName() + " is busy with another order!");
             return false;
@@ -241,7 +245,8 @@ public void setCurrentOrder(Order currentOrder) {
         return true;
     }
     
-    public void pickupOrder() {
+    public void pickupOrder() 
+    {
         if (currentOrder == null) {
             System.out.println("No order assigned!");
             return;
@@ -272,7 +277,8 @@ public void setCurrentOrder(Order currentOrder) {
         System.out.println("Estimated Delivery: " + estimatedDeliveryTime.format(timeFormatter));
     }
     
-    public void startDelivery() {
+    public void startDelivery() 
+    {
         if (currentOrder == null) {
             System.out.println("No order assigned!");
             return;
@@ -336,7 +342,8 @@ public void setCurrentOrder(Order currentOrder) {
         System.out.println("Total deliveries completed: " + totalDeliveries + "\n");
     }
     
-    public void setAvailable(boolean available) {
+    public void setAvailable(boolean available) 
+    {
         if (available && currentOrder != null) {
             System.out.println("Cannot go available while having an active order!");
             return;
@@ -353,7 +360,8 @@ public void setCurrentOrder(Order currentOrder) {
         }
     }
     
-    public String getCurrentDeliveryInfo() {
+    public String getCurrentDeliveryInfo() 
+    {
         if (currentOrder == null) {
             return "No active delivery";
         }
@@ -381,7 +389,8 @@ public void setCurrentOrder(Order currentOrder) {
         return sb.toString();
     }
     
-    public String getStatistics() {
+    public String getStatistics() 
+    {
         StringBuilder sb = new StringBuilder();
         sb.append("\nDELIVERY STATISTICS:\n");
         sb.append("-".repeat(40)).append("\n");
@@ -398,7 +407,8 @@ public void setCurrentOrder(Order currentOrder) {
     }
     
     @Override
-    public boolean login(String inputId, String inputPassword) {
+    public boolean login(String inputId, String inputPassword) 
+    {
         if (super.login(inputId, inputPassword)) {
             System.out.println(getName() + " logged in successfully!");
             if (status == DeliveryStatus.OFFLINE) {
@@ -412,7 +422,8 @@ public void setCurrentOrder(Order currentOrder) {
     }
     
     @Override
-    public String getDetails() {
+    public String getDetails() 
+    {
         StringBuilder sb = new StringBuilder();
         sb.append("\n").append("=".repeat(60)).append("\n");
         sb.append("            DELIVERY PERSON DETAILS\n");
