@@ -12,7 +12,7 @@ public class Cashier extends Person {
     public Cashier(String name, String email, String phoneNumber, String password,
                    double salary, String shift) {
         super(name, email, phoneNumber, password);
-        this.id = "CH" + String.format("%03d", empCounter++);
+        this.id = "CA" + String.format("%03d", empCounter++);
         this.salary = salary;
         this.shift = shift;
     

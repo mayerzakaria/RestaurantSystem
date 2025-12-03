@@ -3,7 +3,7 @@ package restaurantsystemdao;
 import java.sql.*;
 import restaurantsystem.Delivery;
 import util.DB;
-
+import java.util.ArrayList;
 public class DeliveryDAO {
 
     public void insert(Delivery delivery) throws SQLException {
@@ -12,10 +12,10 @@ public class DeliveryDAO {
             conn = DB.getConnection();
             conn.setAutoCommit(false);
 
-            // Insert into Person table
+         
             insertPerson(conn, delivery);
 
-            // Insert into Delivery table
+           
             insertDeliveryDetails(conn, delivery);
 
             conn.commit();
@@ -84,9 +84,60 @@ public class DeliveryDAO {
             case ASSIGNED: return "pending";
             case PICKED_UP: return "pickedup";
             case ON_THE_WAY: return "on the way";
-            case DELIVERED: return "deliverd"; // match spelling in DB
+        case DELIVERED: return "deliverd"; 
             case OFFLINE: return "cancelled";  
             default: return "pending";
         }
     }
+    
+    public static Delivery findById(String deliveryId) throws SQLException {
+        String sql = "SELECT p.id, p.name, p.email, p.phonenumber, p.password, " +
+                     "d.pickuptime, d.estimateddeleiverytime, d.status, d.isavaliable " +
+                     "FROM Person p " +
+                     "INNER JOIN Delievery d ON p.id = d.Delievryid " +
+                     "WHERE p.id = ?";
+
+        try (Connection conn = DB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, deliveryId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Delivery delivery = new Delivery(
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("phonenumber"),
+                    rs.getString("password")
+                );
+                return delivery;
+            }
+        }
+        return null;
+    }
+
+   
+    public static ArrayList<Delivery> getAllDeliveryPersons() throws SQLException {
+        ArrayList<Delivery> deliveryPersons = new ArrayList<>();
+        String sql = "SELECT p.id, p.name, p.email, p.phonenumber, p.password, " +
+                     "d.pickuptime, d.estimateddeleiverytime, d.status, d.isavaliable " +
+                     "FROM Person p " +
+                     "INNER JOIN Delievery d ON p.id = d.Delievryid";
+
+        try (Connection conn = DB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                deliveryPersons.add(new Delivery(
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("phonenumber"),
+                    rs.getString("password")
+                ));
+            }
+        }
+        return deliveryPersons;
+    }
+    
 }

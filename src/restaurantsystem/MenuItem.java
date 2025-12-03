@@ -23,6 +23,10 @@ public class MenuItem implements Serializable {
         this.menuId = menuId;
     }
 
+   
+    
+    
+
   
     public int getItemId() {
         return itemId;

@@ -14,11 +14,11 @@ public class Customer extends Person {
     private boolean subscriptionActive;
     private int monthsRemaining;
 
-    // ORIGINAL CONSTRUCTOR - Used for new customer registration
+    
     public Customer(String password, boolean isEliteCustomer,
                     Address address, String name, String email, String phoneNumber) {
         super(name, email, phoneNumber, password);
-        this.id = "CUST" + String.format("%03d", idCounter++);
+        this.id = "C" + String.format("%03d", idCounter++);
         this.isEliteCustomer = isEliteCustomer;
         this.address = address;
         this.dineInCount = 0;
@@ -26,7 +26,7 @@ public class Customer extends Person {
         this.monthsRemaining = 0;
     }
     
-    // DATABASE CONSTRUCTOR  
+      
     public Customer(String id, String name, String email, String phoneNumber, 
                     String password, boolean isEliteCustomer, int dineInCount,
                     boolean subscriptionActive, int monthsRemaining) {

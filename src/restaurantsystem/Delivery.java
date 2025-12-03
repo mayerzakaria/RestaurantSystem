@@ -55,7 +55,7 @@ public class Delivery extends Person implements Serializable
     
     public Delivery(String name, String email, String phoneNumber, String password) {
         super(name, email, phoneNumber, password);
-        this.id = "DP" + String.format("%03d", deliveryCounter++);
+        this.id = "D" + String.format("%03d", deliveryCounter++);
         this.totalDeliveries = 0;
         this.isAvailable = true;
         this.status = DeliveryStatus.IDLE;

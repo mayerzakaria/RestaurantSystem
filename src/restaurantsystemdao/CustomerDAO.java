@@ -1,20 +1,49 @@
 package restaurantsystemdao;
 
 import java.sql.*;
+import java.util.ArrayList;
 import restaurantsystem.Customer;
 import util.DB;
 
 public class CustomerDAO {
     
     /**
+     * Get the next available customer ID from database
+     */
+    private static String getNextCustomerId() throws SQLException {
+        String sql = "SELECT id FROM Person WHERE id LIKE 'C%' ORDER BY id DESC LIMIT 1";
+        
+        try (Connection conn = DB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            if (rs.next()) {
+                String lastId = rs.getString("id");
+               
+                int lastNumber = Integer.parseInt(lastId.substring(4));
+                int nextNumber = lastNumber + 1;
+                return "C" + String.format("%03d", nextNumber);
+            } else {
+                // No customers exist yet, start from CUST001
+                return "C001";
+            }
+        }
+    }
+    
+    /**
      * Insert customer - handles both Person and Customer tables
      * Uses transaction to ensure data consistency
+     * Automatically generates customer ID from database
      */
     public void insert(Customer customer) throws SQLException {
         Connection conn = null;
         try {
             conn = DB.getConnection();
             conn.setAutoCommit(false); // Start transaction
+            
+            // Generate next customer ID from database
+            String newCustomerId = getNextCustomerId();
+            customer.setid(newCustomerId);
             
             // 1. Insert into Person table first
             insertPerson(conn, customer);
@@ -88,7 +117,8 @@ public class CustomerDAO {
      * Find customer by ID - retrieves from both Person and Customer tables
      */
     public Customer findById(String customerId) throws SQLException {
-        String sql = "SELECT p.*, c.Iselitecustomer, c.dineincount, " +
+        String sql = "SELECT p.id, p.name, p.email, p.phonenumber, p.password, " +
+                     "c.Iselitecustomer, c.dineincount, " +
                      "c.subscriptionactive, c.monthremaining " +
                      "FROM Person p " +
                      "INNER JOIN Customer c ON p.id = c.customerid " +
@@ -172,4 +202,37 @@ public class CustomerDAO {
             ps.executeUpdate();
         }
     }
+
+    /**
+     * Get all customers from database
+     */
+    public static ArrayList<Customer> getAllCustomers() throws SQLException {
+        ArrayList<Customer> customers = new ArrayList<>();
+        String sql = "SELECT p.id, p.name, p.email, p.phonenumber, p.password, " +
+                     "c.Iselitecustomer, c.dineincount, " +
+                     "c.subscriptionactive, c.monthremaining " +
+                     "FROM Person p " +
+                     "INNER JOIN Customer c ON p.id = c.customerid";
+
+        try (Connection conn = DB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                customers.add(new Customer(
+                    rs.getString("id"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("phonenumber"),
+                    rs.getString("password"),
+                    rs.getBoolean("Iselitecustomer"),
+                    rs.getInt("dineincount"),
+                    rs.getBoolean("subscriptionactive"),
+                    rs.getInt("monthremaining")
+                ));
+            }
+        }
+        return customers;
+    }
 }
+
