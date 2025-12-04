@@ -13,10 +13,13 @@ public class AddressDAO {
 // Insert a new address
 public static void insertAddress(Address address) 
 {
+    
+    
     String sql = "INSERT INTO Address(id, fullAddress, isDefault, customerId) " +
-                 "VALUES (?, ?, ?, ?) " +
-                 "ON DUPLICATE KEY UPDATE fullAddress = VALUES(fullAddress), " +
-                 "isDefault = VALUES(isDefault), customerId = VALUES(customerId)";
+             "VALUES (?, ?, ?, ?) " +
+             "ON DUPLICATE KEY UPDATE fullAddress = VALUES(fullAddress), " +
+             "isDefault = VALUES(isDefault)";
+
 
     try (Connection conn = DB.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -158,6 +161,21 @@ public static List<Address> getAddressesByCustomerId(String customerId) {
 
     return addresses;
 }
+
+public static int getNextAddressId() {
+    String sql = "SELECT IFNULL(MAX(id), 0) + 1 AS nextId FROM Address";
+    try (Connection conn = DB.getConnection();
+         Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery(sql)) {
+
+        if (rs.next()) return rs.getInt("nextId");
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 1;
+}
+
 
 
 }

@@ -3,6 +3,7 @@ package restaurantsystem;
 import restaurantsystemdao.CustomerDAO; 
 import java.sql.SQLException;            
 import java.util.*;
+import restaurantsystemdao.AddressDAO;
 
 public class Customer extends Person {
     private static int idCounter = 1;
@@ -137,8 +138,10 @@ public String getPassword() {
         String password = scanner.nextLine();
         
         System.out.print("Enter address: ");
-        String addressStr = scanner.nextLine();
-        Address address = new Address(1, addressStr, true);
+       
+       String addressStr = scanner.nextLine();
+       int newAddressId = AddressDAO.getNextAddressId();
+       Address address = new Address(newAddressId, addressStr, true);
         
         // Create customer object
         Customer customer = new Customer(password, false, address, name, email, phone);
@@ -149,6 +152,11 @@ public String getPassword() {
             CustomerDAO dao = new CustomerDAO(); // No parameter needed
             dao.insert(customer); // Use insert() method, not addCustomer()
             System.out.println(" Customer saved in database!");
+        address.setCustomerId(customer.getCustomerId());
+        AddressDAO.insertAddress(address);
+        System.out.println(" Address saved in database!");
+        
+        
         } catch (SQLException e) {
             System.out.println(" Error saving customer: " + e.getMessage());
             e.printStackTrace();

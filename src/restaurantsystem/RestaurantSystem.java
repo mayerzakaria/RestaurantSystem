@@ -52,7 +52,8 @@ public class RestaurantSystem {
                 continue;
             }
 
-            if (mainChoice == 1) {
+            if (mainChoice == 1) 
+            {
                 // Register new customer using the existing method in Customer class
                 Customer.registerCustomer(customers, scanner);
 
@@ -319,15 +320,14 @@ public class RestaurantSystem {
                 boolean paymentSuccess = payment.processPayment(order.getTotal());
 
                 if (paymentSuccess) {
-                    // Save payment to database first before setting it on order
+                  
                     try {
                         PaymentDAO paymentDAO = new PaymentDAO();
                         int paymentId = paymentDAO.insert(payment);
                         if (paymentId > 0) {
-                            // Payment saved successfully, now set it on the order
+                          
                             order.setPayment(payment);
-                            // Keep order as PENDING for delivery orders (not COMPLETE yet)
-                            // It will be marked COMPLETE when delivery person completes the delivery
+                          
                             order.updateStatus(Status.PENDING);
                         } else {
                             System.err.println("Error: Could not save payment to database.");
@@ -455,7 +455,7 @@ public class RestaurantSystem {
             if (choice == 1) {
                 // Process Takeaway Order
                 System.out.println("\n=== PROCESS TAKEAWAY ORDER ===");
-                System.out.print("Enter customer ID (or 0 for walk-in): ");
+                System.out.print("Enter customer ID  ");
                 String custId = scanner.nextLine();
 
                 Customer customer = null;
@@ -531,7 +531,7 @@ public class RestaurantSystem {
                         if (paymentId > 0) {
                             OrderDAO orderDAO = new OrderDAO();
                             orderDAO.insert(order);
-                            System.out.println("\n✓ Order saved successfully!");
+                            System.out.println("\n Order saved successfully!");
                         }
                     } catch (SQLException e) {
                         System.err.println("Error saving to database: " + e.getMessage());
@@ -543,7 +543,7 @@ public class RestaurantSystem {
             } else if (choice == 2) {
                 // Process Dine-In Order
                 System.out.println("\n=== PROCESS DINE-IN ORDER ===");
-                System.out.print("Enter customer ID (or 0 for walk-in): ");
+                System.out.print("Enter customer ID  ");
                 String custId = scanner.nextLine();
 
                 Customer customer = null;
@@ -628,7 +628,7 @@ public class RestaurantSystem {
                             if (paymentId > 0) {
                                 OrderDAO orderDAO = new OrderDAO();
                                 orderDAO.insert(order);
-                                System.out.println("\n✓ Order saved successfully!");
+                                System.out.println("\n Order saved successfully!");
                             }
                         } catch (SQLException e) {
                             System.err.println("Error saving to database: " + e.getMessage());
@@ -640,7 +640,7 @@ public class RestaurantSystem {
                             order.getTable().releaseTable();
                             try {
                                 TableDAO.update(order.getTable());
-                                System.out.println("✓ Table released successfully!");
+                                System.out.println(" Table released successfully!");
                             } catch (SQLException e) {
                                 System.err.println("Error updating table: " + e.getMessage());
                             }
@@ -699,7 +699,7 @@ public class RestaurantSystem {
                         Table tableToRelease = occupied.get(tChoice - 1);
                         tableToRelease.releaseTable();
                         TableDAO.update(tableToRelease);
-                        System.out.println("✓ Table " + tableToRelease.getTableNumber() + " released successfully!");
+                        System.out.println("Table " + tableToRelease.getTableNumber() + " released successfully!");
                     }
                 } catch (SQLException e) {
                     System.err.println("Error: " + e.getMessage());
@@ -770,7 +770,7 @@ public class RestaurantSystem {
                     try {
                         DeliveryDAO dao = new DeliveryDAO();
                         dao.update(delivery);
-                        System.out.println("✓ Status updated in database.");
+                        System.out.println(" Status updated in database.");
                     } catch (SQLException e) {
                         System.err.println("Warning: Could not update status in database: " + e.getMessage());
                     }
@@ -786,7 +786,7 @@ public class RestaurantSystem {
                     try {
                         DeliveryDAO dao = new DeliveryDAO();
                         dao.update(delivery);
-                        System.out.println("✓ Status updated in database.");
+                        System.out.println(" Status updated in database.");
                     } catch (SQLException e) {
                         System.err.println("Warning: Could not update status in database: " + e.getMessage());
                     }
@@ -809,7 +809,7 @@ public class RestaurantSystem {
                         OrderDAO orderDAO = new OrderDAO();
                         orderDAO.insert(completedOrder); // This will update since we use ON DUPLICATE KEY UPDATE
 
-                        System.out.println("✓ Delivery completed and saved to database.");
+                        System.out.println(" Delivery completed and saved to database.");
                     } catch (SQLException e) {
                         System.err.println("Warning: Could not update database: " + e.getMessage());
                     }
@@ -828,7 +828,7 @@ public class RestaurantSystem {
                     try {
                         DeliveryDAO dao = new DeliveryDAO();
                         dao.update(delivery);
-                        System.out.println("✓ Availability updated in database.");
+                        System.out.println(" Availability updated in database.");
                     } catch (SQLException e) {
                         System.err.println("Warning: Could not update availability in database: " + e.getMessage());
                     }
