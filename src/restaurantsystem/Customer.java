@@ -82,64 +82,109 @@ public String getPassword() {
     public static void registerCustomer(ArrayList<Customer> customers, Scanner scanner) {
         System.out.println("\n=== CUSTOMER REGISTRATION ===");
         
-        // Validate name
-        String name;
-        while (true) {
-            System.out.print("Enter your name: ");
-            name = scanner.nextLine();
         
-            if (name.length() < 3) {
-                System.out.println(" Name must be at least 3 characters long!");
-                continue;
-            }
-        
-            if (!name.matches("[a-zA-Z\\s]+")) {
-                System.out.println(" Name must contain only letters!");
-                continue;
-            }
-            break;
+          // Validate Name
+   
+    String name;
+    while (true) {
+        System.out.print("Enter Name: ");
+        name = scanner.nextLine().trim();
+        if (name.length() < 3) {
+            System.out.println("Name must be at least 3 characters.");
+            continue;
         }
+        if (!name.matches("^[\\p{L} ]{3,}$")) {
+            System.out.println("Name cannot contain numbers or special characters.");
+            continue;
+        }
+        break;
+    }
+
+   
+    // Validate Email
     
-        // Validate email
-        String email;
-        while (true) {
-            System.out.print("Enter email: ");
-            email = scanner.nextLine();
-        
-            if (!email.contains("@") || !email.contains(".")) {
-                System.out.println("Invalid email format! Must contain @ and domain (e.g., user@example.com)");
-                continue;
-            }
-            break;
+    String email;
+    while (true) {
+        System.out.print("Enter Email: ");
+        email = scanner.nextLine().trim();
+        if (!email.contains("@") || !email.contains(".")) {
+            System.out.println("Email must contain '@' and a dot.");
+            continue;
         }
+        if (!email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.(?i:com)$")) {
+            System.out.println("Email must be valid and end with .com");
+            continue;
+        }
+        break;
+    }
+
     
-        // Validate phone
-        String phone;
-        while (true) {
-            System.out.print("Enter phone number: ");
-            phone = scanner.nextLine();
-        
-            if (phone.length() != 11) {
-                System.out.println(" Phone number must be exactly 11 digits!");
-                continue;
-            }
-            if (!phone.startsWith("01")) {
-                System.out.println(" Phone number must start with 01!");
-                continue;
-            }
-            if (!phone.matches("\\d+")) {
-                System.out.println("Phone number must contain only digits!");
-                continue;
-            }
-            break;
+    // Validate Phone
+  
+    String phone;
+    while (true) {
+        System.out.print("Enter Phone: ");
+        phone = scanner.nextLine().trim();
+        if (!phone.matches("\\d+")) {
+            System.out.println("Phone number must contain digits only.");
+            continue;
         }
+        if (phone.length() != 11) {
+            System.out.println("Phone number must be exactly 11 digits.");
+            continue;
+        }
+        if (!phone.matches("^(011|012|010|015)\\d{8}$")) {
+            System.out.println("Phone number must start with 011, 012, 010, or 015.");
+            continue;
+        }
+        break;
+    }
+
+ 
+    // Validate Password
+   
+    String password;
+    while (true) {
+        System.out.print("Enter Password: ");
+        password = scanner.nextLine();
+        if (password.length() < 6) {
+            System.out.println("Password must be at least 6 characters.");
+            continue;
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            System.out.println("Password must contain at least one uppercase letter.");
+            continue;
+        }
+        if (!password.matches(".*[a-z].*")) {
+            System.out.println("Password must contain at least one lowercase letter.");
+            continue;
+        }
+        if (!password.matches(".*[^A-Za-z0-9].*")) {
+            System.out.println("Password must contain at least one special character.");
+            continue;
+        }
+        break;
+    }
+
+ 
+    // Validate Address
+   
+    String addressStr;
+    while (true) {
+        System.out.print("Enter Address: ");
+        addressStr = scanner.nextLine().trim();
+        if (addressStr.length() < 5) {
+            System.out.println("Address must be at least 5 characters.");
+            continue;
+        }
+        if (!addressStr.matches("^[A-Za-z0-9 ]{5,}$")) {
+            System.out.println("Address can only contain letters, numbers, and spaces.");
+            continue;
+        }
+        break;
+    }
+
         
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine();
-        
-        System.out.print("Enter address: ");
-       
-       String addressStr = scanner.nextLine();
        int newAddressId = AddressDAO.getNextAddressId();
        Address address = new Address(newAddressId, addressStr, true);
         
@@ -203,7 +248,7 @@ public String getPassword() {
         
         if (dineInCount >= 5 && !isEliteCustomer) {
             System.out.println("\n" + "=".repeat(60));
-            System.out.println(" CONGRATULATIONS! 🎉");
+            System.out.println(" CONGRATULATIONS! ");
             System.out.println("=".repeat(60));
             System.out.println(" You've earned FREE Elite Membership!");
             System.out.println(" 10% discount on ALL orders activated automatically!");
